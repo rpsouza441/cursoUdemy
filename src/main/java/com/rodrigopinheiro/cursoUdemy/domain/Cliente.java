@@ -21,7 +21,7 @@ import com.rodrigopinheiro.cursoUdemy.domain.enums.TipoCliente;
 public class Cliente implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
@@ -34,13 +34,15 @@ public class Cliente implements Serializable {
 	@JsonManagedReference
 	private List<Endereco> listaEndereco = new ArrayList<>();
 
-	
 	@ElementCollection
 	@CollectionTable(name = "TELEFONE")
 	/*
 	 * Set não repete conteudo
 	 */
 	private Set<String> listaTelefone = new HashSet<>();
+
+	@OneToMany(mappedBy = "cliente")
+	private List<Pedido> listaPedido = new ArrayList<>();
 
 	public Cliente(Integer id, String nome, String email, String cpfOuCnpj, TipoCliente tipo) {
 		super();
@@ -109,6 +111,14 @@ public class Cliente implements Serializable {
 
 	public void setListaTelefone(Set<String> listaTelefone) {
 		this.listaTelefone = listaTelefone;
+	}
+
+	public List<Pedido> getListaPedido() {
+		return listaPedido;
+	}
+
+	public void setListaPedido(List<Pedido> listaPedido) {
+		this.listaPedido = listaPedido;
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package com.rodrigopinheiro.cursoUdemy;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,13 +13,20 @@ import com.rodrigopinheiro.cursoUdemy.domain.Cidade;
 import com.rodrigopinheiro.cursoUdemy.domain.Cliente;
 import com.rodrigopinheiro.cursoUdemy.domain.Endereco;
 import com.rodrigopinheiro.cursoUdemy.domain.Estado;
+import com.rodrigopinheiro.cursoUdemy.domain.Pagamento;
+import com.rodrigopinheiro.cursoUdemy.domain.PagamentoComBoleto;
+import com.rodrigopinheiro.cursoUdemy.domain.PagamentoComCartao;
+import com.rodrigopinheiro.cursoUdemy.domain.Pedido;
 import com.rodrigopinheiro.cursoUdemy.domain.Produto;
+import com.rodrigopinheiro.cursoUdemy.domain.enums.EstadoPagamento;
 import com.rodrigopinheiro.cursoUdemy.domain.enums.TipoCliente;
 import com.rodrigopinheiro.cursoUdemy.repositories.CategoriaRepository;
 import com.rodrigopinheiro.cursoUdemy.repositories.CidadeRepository;
 import com.rodrigopinheiro.cursoUdemy.repositories.ClienteRepository;
 import com.rodrigopinheiro.cursoUdemy.repositories.EnderecoRepository;
 import com.rodrigopinheiro.cursoUdemy.repositories.EstadoRepository;
+import com.rodrigopinheiro.cursoUdemy.repositories.PagamentoRepository;
+import com.rodrigopinheiro.cursoUdemy.repositories.PedidoRepository;
 import com.rodrigopinheiro.cursoUdemy.repositories.ProdutoRepository;
 
 @SpringBootApplication
@@ -41,6 +49,12 @@ public class CursoUdemyApplication implements CommandLineRunner {
 
 	@Autowired
 	private EnderecoRepository enderecoRepository;
+
+	@Autowired
+	private PedidoRepository pedidoRepository;
+
+	@Autowired
+	private PagamentoRepository pagamentoRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(CursoUdemyApplication.class, args);
@@ -77,6 +91,19 @@ public class CursoUdemyApplication implements CommandLineRunner {
 
 		cli1.getListaEndereco().addAll(Arrays.asList(end1, end2));
 
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+		Pedido ped1 = new Pedido(null, sdf.parse("30/09/2017 11:30"), cli1, end1);
+		Pedido ped2 = new Pedido(null, sdf.parse("10/10/2017 11:30"), cli1, end2);
+
+		Pagamento pgto1 = new PagamentoComCartao(null, EstadoPagamento.QUITADO, ped1, 6);
+		ped1.setPagamento(pgto1);
+
+		Pagamento pgto2 = new PagamentoComBoleto(null, EstadoPagamento.PENDENTE, ped2, sdf.parse("20/10/2017 00:00"),
+				null);
+		ped2.setPagamento(pgto2);
+
+		cli1.getListaPedido().addAll(Arrays.asList(ped1, ped2));
+
 		categoriaRepository.saveAll(Arrays.asList(c1, c2));
 		produtoRepository.saveAll(Arrays.asList(p1, p2));
 
@@ -87,6 +114,9 @@ public class CursoUdemyApplication implements CommandLineRunner {
 
 		enderecoRepository.saveAll(Arrays.asList(end1, end2));
 
+		pedidoRepository.saveAll(Arrays.asList(ped1, ped2));
+
+		pagamentoRepository.saveAll(Arrays.asList(pgto1, pgto2));
 	}
 
 }
