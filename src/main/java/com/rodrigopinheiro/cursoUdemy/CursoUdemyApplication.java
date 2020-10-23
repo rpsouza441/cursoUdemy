@@ -1,8 +1,10 @@
 package com.rodrigopinheiro.cursoUdemy;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 
+import org.hibernate.query.criteria.internal.predicate.IsEmptyPredicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -13,6 +15,7 @@ import com.rodrigopinheiro.cursoUdemy.domain.Cidade;
 import com.rodrigopinheiro.cursoUdemy.domain.Cliente;
 import com.rodrigopinheiro.cursoUdemy.domain.Endereco;
 import com.rodrigopinheiro.cursoUdemy.domain.Estado;
+import com.rodrigopinheiro.cursoUdemy.domain.ItemPedido;
 import com.rodrigopinheiro.cursoUdemy.domain.Pagamento;
 import com.rodrigopinheiro.cursoUdemy.domain.PagamentoComBoleto;
 import com.rodrigopinheiro.cursoUdemy.domain.PagamentoComCartao;
@@ -25,6 +28,7 @@ import com.rodrigopinheiro.cursoUdemy.repositories.CidadeRepository;
 import com.rodrigopinheiro.cursoUdemy.repositories.ClienteRepository;
 import com.rodrigopinheiro.cursoUdemy.repositories.EnderecoRepository;
 import com.rodrigopinheiro.cursoUdemy.repositories.EstadoRepository;
+import com.rodrigopinheiro.cursoUdemy.repositories.ItemPedidoRepository;
 import com.rodrigopinheiro.cursoUdemy.repositories.PagamentoRepository;
 import com.rodrigopinheiro.cursoUdemy.repositories.PedidoRepository;
 import com.rodrigopinheiro.cursoUdemy.repositories.ProdutoRepository;
@@ -55,6 +59,9 @@ public class CursoUdemyApplication implements CommandLineRunner {
 
 	@Autowired
 	private PagamentoRepository pagamentoRepository;
+
+	@Autowired
+	private ItemPedidoRepository itemPedidoRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(CursoUdemyApplication.class, args);
@@ -104,6 +111,16 @@ public class CursoUdemyApplication implements CommandLineRunner {
 
 		cli1.getListaPedido().addAll(Arrays.asList(ped1, ped2));
 
+		ItemPedido ip1 = new ItemPedido(ped1, p1, 0.00, 1, 2000.00);
+		ItemPedido ip2 = new ItemPedido(ped1, p2, 0.00, 2, 80.00);
+		ItemPedido ip3 = new ItemPedido(ped2, p2, 100.00, 1, 800.00);
+
+		ped1.getListaItem().addAll(Arrays.asList(ip1, ip2));
+		ped2.getListaItem().addAll(Arrays.asList(ip3));
+
+		p1.getListaItem().addAll(Arrays.asList(ip1));
+		p2.getListaItem().addAll(Arrays.asList(ip2, ip3));
+
 		categoriaRepository.saveAll(Arrays.asList(c1, c2));
 		produtoRepository.saveAll(Arrays.asList(p1, p2));
 
@@ -117,6 +134,8 @@ public class CursoUdemyApplication implements CommandLineRunner {
 		pedidoRepository.saveAll(Arrays.asList(ped1, ped2));
 
 		pagamentoRepository.saveAll(Arrays.asList(pgto1, pgto2));
+
+		itemPedidoRepository.saveAll(Arrays.asList(ip1, ip2, ip3));
 	}
 
 }
