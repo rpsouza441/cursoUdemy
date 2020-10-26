@@ -70,6 +70,14 @@ public class CursoUdemyApplication implements CommandLineRunner {
 
 		Categoria c1 = new Categoria(null, "informatica");
 		Categoria c2 = new Categoria(null, "escritorio");
+		Categoria c3 = new Categoria(null, "perfumaria");
+		Categoria c4 = new Categoria(null, "cama mesa e banho");
+		Categoria c5 = new Categoria(null, "eletronicos");
+		Categoria c6 = new Categoria(null, "jardinagem");
+		Categoria c7 = new Categoria(null, "decoracao");
+		Categoria c8 = new Categoria(null, "limpeza");
+		Categoria c9 = new Categoria(null, "drogaria");
+		Categoria c10 = new Categoria(null, "cozinha");
 		Produto p1 = new Produto(null, "computador", 2000.00);
 		Produto p2 = new Produto(null, "computador", 2000.00);
 
@@ -119,7 +127,7 @@ public class CursoUdemyApplication implements CommandLineRunner {
 		p1.getListaItem().addAll(Arrays.asList(ip1));
 		p2.getListaItem().addAll(Arrays.asList(ip2, ip3));
 
-		categoriaRepository.saveAll(Arrays.asList(c1, c2));
+		categoriaRepository.saveAll(Arrays.asList(c1, c2, c3, c4, c5, c6, c7, c8, c9, c10));
 		produtoRepository.saveAll(Arrays.asList(p1, p2));
 
 		estadoRepository.saveAll(Arrays.asList(e1, e2));
