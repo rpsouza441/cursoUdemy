@@ -2,14 +2,12 @@ package com.rodrigopinheiro.cursoUdemy.resources;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Properties;
 import java.util.stream.Collectors;
 
-import org.springframework.data.domain.Sort.Direction;
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.querydsl.QPageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,33 +35,32 @@ public class CategoriaResource {
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<?> findAll() {
-		List<Categoria> lista = service.findAll();
-		List<CategoriaDTO> listDto = lista.stream().map(obj -> new CategoriaDTO(obj)).collect(Collectors.toList());
+		List<?> lista = service.findAll();
+		List<?> listDto = lista.stream().map(obj -> new CategoriaDTO(obj)).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDto);
 	}
 
 	@RequestMapping(value = "/page", method = RequestMethod.GET)
-	public ResponseEntity<Page<?>> findPage(
-			@RequestParam(value="page", defaultValue="0") Integer page, 
-			@RequestParam(value="linesPerPage", defaultValue="24")Integer linesPerPage, 
-			@RequestParam(value="orderby", defaultValue="nome")String orderby, 
-			@RequestParam(value="direction", defaultValue="ASC")String direction
-			) {
+	public ResponseEntity<Page<?>> findPage(@RequestParam(value = "page", defaultValue = "0") Integer page,
+			@RequestParam(value = "linesPerPage", defaultValue = "24") Integer linesPerPage,
+			@RequestParam(value = "orderby", defaultValue = "nome") String orderby,
+			@RequestParam(value = "direction", defaultValue = "ASC") String direction) {
 		Page<?> lista = service.findPage(page, linesPerPage, orderby, direction);
 		Page<?> listDto = lista.map(obj -> new CategoriaDTO(obj));
 		return ResponseEntity.ok().body(listDto);
 	}
 
 	@RequestMapping(value = "{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> find(@RequestBody Categoria obj, @PathVariable Integer id) {
-		obj.setId(id);
+	public ResponseEntity<Void> find(@Valid @RequestBody CategoriaDTO objDTO, @PathVariable Integer id) {
+		Categoria obj = service.fromDTO(objDTO);
 		obj = service.update(obj);
 		return ResponseEntity.noContent().build();
 
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Void> insert(@RequestBody Categoria obj) {
+	public ResponseEntity<Void> insert(@Valid @RequestBody CategoriaDTO objDOT) {
+		Categoria obj = service.fromDTO(objDOT);
 		obj = service.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();

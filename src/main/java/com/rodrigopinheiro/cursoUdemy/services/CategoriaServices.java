@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.rodrigopinheiro.cursoUdemy.domain.Categoria;
+import com.rodrigopinheiro.cursoUdemy.dto.CategoriaDTO;
 import com.rodrigopinheiro.cursoUdemy.repositories.CategoriaRepository;
 import com.rodrigopinheiro.cursoUdemy.services.Exception.DataIntegrityException;
 import com.rodrigopinheiro.cursoUdemy.services.Exception.ObjectNotFoundException;
@@ -56,6 +57,10 @@ public class CategoriaServices {
 			throw new DataIntegrityException("Não é possivel excluir uma categoria que possui produtos");
 		}
 
+	}
+
+	public Categoria fromDTO(CategoriaDTO objDOT) {
+		return new Categoria(objDOT.getId(), objDOT.getNome());
 	}
 
 }
