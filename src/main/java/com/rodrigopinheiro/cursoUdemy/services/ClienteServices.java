@@ -3,16 +3,24 @@ package com.rodrigopinheiro.cursoUdemy.services;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
+import com.rodrigopinheiro.cursoUdemy.domain.Cidade;
 import com.rodrigopinheiro.cursoUdemy.domain.Cliente;
+import com.rodrigopinheiro.cursoUdemy.domain.Endereco;
+import com.rodrigopinheiro.cursoUdemy.domain.enums.TipoCliente;
 import com.rodrigopinheiro.cursoUdemy.dto.ClienteDTO;
+import com.rodrigopinheiro.cursoUdemy.dto.ClienteNewDTO;
 import com.rodrigopinheiro.cursoUdemy.repositories.ClienteRepository;
+import com.rodrigopinheiro.cursoUdemy.repositories.EnderecoRepository;
 import com.rodrigopinheiro.cursoUdemy.services.Exception.DataIntegrityException;
 import com.rodrigopinheiro.cursoUdemy.services.Exception.ObjectNotFoundException;
 
@@ -21,6 +29,9 @@ public class ClienteServices {
 
 	@Autowired
 	private ClienteRepository repo;
+
+	@Autowired
+	private EnderecoRepository enderecoRepository;
 
 	public Cliente find(Integer id) {
 		Optional<Cliente> obj = repo.findById(id);
@@ -39,9 +50,13 @@ public class ClienteServices {
 
 	}
 
+	/* Para garantir que o endereço seja salvo junto com o cliente */
+	@Transactional
 	public Cliente insert(Cliente obj) {
 		obj.setId(null);
-		return repo.save(obj);
+		obj = repo.save(obj);
+		enderecoRepository.saveAll(obj.getListaEndereco());
+		return obj;
 	}
 
 	public Cliente update(Cliente obj) {
@@ -67,6 +82,27 @@ public class ClienteServices {
 	private void updateData(Cliente newobj, Cliente obj) {
 		newobj.setNome(obj.getNome());
 		newobj.setEmail(obj.getEmail());
+	}
+
+	public Cliente fromDTO(ClienteNewDTO objDto) {
+		Cliente cli = new Cliente(null, objDto.getNome(), objDto.getEmail(), objDto.getCpfOuCnpj(),
+				TipoCliente.toEnum(objDto.getTipo()));
+
+		Cidade cid = new Cidade(objDto.getCidadeId(), null, null);
+
+		Endereco end = new Endereco(null, objDto.getLogradouro(), objDto.getNumero(), objDto.getComplemento(),
+				objDto.getBairro(), objDto.getCep(), cli, cid);
+
+		cli.getListaEndereco().add(end);
+
+		cli.getListaTelefone().add(objDto.getTelefone1());
+		if (objDto.getTelefone2() != null) {
+			cli.getListaTelefone().add(objDto.getTelefone2());
+		}
+		if (objDto.getTelefone3() != null) {
+			cli.getListaTelefone().add(objDto.getTelefone3());
+		}
+		return cli;
 	}
 
 }
