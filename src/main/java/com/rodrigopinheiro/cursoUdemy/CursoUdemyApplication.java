@@ -99,6 +99,9 @@ public class CursoUdemyApplication implements CommandLineRunner {
 		Cliente cli1 = new Cliente(null, "Maria", "maria@maria.com.br", "369874125", TipoCliente.PESSOAFISICA);
 		cli1.getListaTelefone().addAll(Arrays.asList("999999999", "5555555555"));
 
+		Cliente cli2 = new Cliente(null, "João", "maria@maria.com.br", "369874125", TipoCliente.PESSOAFISICA);
+		cli2.getListaTelefone().addAll(Arrays.asList("999999999", "5555555555"));
+
 		Endereco end1 = new Endereco(null, "Rua flores", "300", "apto 303", "Jardim", "38220832", cli1, cidade1);
 		Endereco end2 = new Endereco(null, "Avenida Matos", "105", "Sala 1303", "Cetro", "7770832", cli1, cidade2);
 
@@ -133,7 +136,7 @@ public class CursoUdemyApplication implements CommandLineRunner {
 		estadoRepository.saveAll(Arrays.asList(e1, e2));
 		cidadeRepository.saveAll(Arrays.asList(cidade1, cidade2, cidade3));
 
-		clienteRepository.saveAll(Arrays.asList(cli1));
+		clienteRepository.saveAll(Arrays.asList(cli1,cli2));
 
 		enderecoRepository.saveAll(Arrays.asList(end1, end2));
 
