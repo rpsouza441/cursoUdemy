@@ -99,7 +99,7 @@ public class CursoUdemyApplication implements CommandLineRunner {
 		Cliente cli1 = new Cliente(null, "Maria", "maria@maria.com.br", "369874125", TipoCliente.PESSOAFISICA);
 		cli1.getListaTelefone().addAll(Arrays.asList("999999999", "5555555555"));
 
-		Cliente cli2 = new Cliente(null, "João", "maria@maria.com.br", "369874125", TipoCliente.PESSOAFISICA);
+		Cliente cli2 = new Cliente(null, "João", "mariaa@maria.com.br", "369874125", TipoCliente.PESSOAFISICA);
 		cli2.getListaTelefone().addAll(Arrays.asList("999999999", "5555555555"));
 
 		Endereco end1 = new Endereco(null, "Rua flores", "300", "apto 303", "Jardim", "38220832", cli1, cidade1);
