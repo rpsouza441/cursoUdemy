@@ -38,7 +38,7 @@ public class Produto implements Serializable {
 	private Set<ItemPedido> listaItem = new HashSet<>();
 
 	@JsonIgnore
-	public List<Pedido> gertPedidos() {
+	public List<Pedido> getPedidos() {
 		List<Pedido> lista = new ArrayList<>();
 		for (ItemPedido i : listaItem) {
 			lista.add(i.getPedido());
