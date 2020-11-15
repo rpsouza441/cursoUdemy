@@ -14,14 +14,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.rodrigopinheiro.cursoUdemy.domain.Produto;
 import com.rodrigopinheiro.cursoUdemy.dto.ProdutoDTO;
 import com.rodrigopinheiro.cursoUdemy.resources.utils.URL;
-import com.rodrigopinheiro.cursoUdemy.services.ProdutoServices;
+import com.rodrigopinheiro.cursoUdemy.services.ProdutoService;
 
 @RestController
 @RequestMapping(value = "/produtos")
 public class ProdutoResource {
 	
 	@Autowired	
-	private ProdutoServices service;
+	private ProdutoService service;
 
 	@RequestMapping(value = "{id}", method = RequestMethod.GET)
 	public ResponseEntity<?> find(@PathVariable Integer id) {

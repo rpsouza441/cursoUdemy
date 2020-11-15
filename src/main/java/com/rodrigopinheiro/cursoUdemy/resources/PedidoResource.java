@@ -14,14 +14,14 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.rodrigopinheiro.cursoUdemy.domain.Pedido;
-import com.rodrigopinheiro.cursoUdemy.services.PedidoServices;
+import com.rodrigopinheiro.cursoUdemy.services.PedidoService;
 
 @RestController
 @RequestMapping(value = "/pedidos")
 public class PedidoResource {
 
 	@Autowired
-	private PedidoServices service;
+	private PedidoService service;
 
 	@RequestMapping(value = "{id}", method = RequestMethod.GET)
 	public ResponseEntity<?> find(@PathVariable Integer id) {

@@ -17,7 +17,7 @@ import com.rodrigopinheiro.cursoUdemy.repositories.PedidoRepository;
 import com.rodrigopinheiro.cursoUdemy.services.Exception.ObjectNotFoundException;
 
 @Service
-public class PedidoServices {
+public class PedidoService {
 
 	@Autowired
 	private PedidoRepository repo;
@@ -29,13 +29,16 @@ public class PedidoServices {
 	private PagamentoRepository pagamentoRepository;
 
 	@Autowired
-	private ProdutoServices produtoService;
+	private ProdutoService produtoService;
 
 	@Autowired
 	private ClienteServices clienteService;
 
 	@Autowired
 	private ItemPedidoRepository itemPedidoRepository;
+	
+	@Autowired
+	private EmailService emailService;
 
 	public Pedido find(Integer id) {
 		Optional<Pedido> obj = repo.findById(id);
@@ -64,7 +67,7 @@ public class PedidoServices {
 			ip.setPedido(obj);
 		}
 		itemPedidoRepository.saveAll(obj.getListaItem());
-		System.out.println(obj);
+		emailService.sendOrderComfirmation(obj);
 		return obj;
 	}
 }

@@ -16,7 +16,7 @@ import com.rodrigopinheiro.cursoUdemy.repositories.ProdutoRepository;
 import com.rodrigopinheiro.cursoUdemy.services.Exception.ObjectNotFoundException;
 
 @Service
-public class ProdutoServices {
+public class ProdutoService {
 
 	@Autowired
 	private ProdutoRepository repo;
